@@ -1,0 +1,8 @@
+{
+  "parent": "exnihilosequentia:block/barrel_base",
+  "render_type": "minecraft:cutout_mipped",
+  "textures": {
+    "particle": "exnihilocoloratus:block/yellow_barrel",
+    "texture": "exnihilocoloratus:block/yellow_barrel"
+  }
+}

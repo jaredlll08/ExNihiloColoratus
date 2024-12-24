@@ -1,0 +1,8 @@
+{
+  "parent": "exnihilosequentia:block/crucible_base",
+  "render_type": "minecraft:cutout_mipped",
+  "textures": {
+    "particle": "exnihilocoloratus:block/none_crucible",
+    "texture": "exnihilocoloratus:block/none_crucible"
+  }
+}
