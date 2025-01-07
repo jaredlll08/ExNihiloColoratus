@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -19,7 +20,16 @@ import novamachina.exnihilosequentia.world.level.block.entity.WoodBarrelBlockEnt
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 public class ColoredWoodBarrelBlock extends WoodBarrelBlock {
+
+
+    private final Optional<DyeColor> color;
+
+    public ColoredWoodBarrelBlock(Optional<DyeColor> color) {
+        this.color = color;
+    }
 
     @Override
     public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand handIn, @NotNull BlockHitResult hit) {
@@ -28,9 +38,9 @@ public class ColoredWoodBarrelBlock extends WoodBarrelBlock {
         if (level.getBlockEntity(pos) instanceof WoodBarrelBlockEntity be) {
             Block newBlock = null;
             if (be.getFluidAmount() == 0) {
-                if (stack.getItem() instanceof DyeItem dyeItem) {
+                if (stack.getItem() instanceof DyeItem dyeItem && this.color.filter(dyeColor -> dyeColor != dyeItem.getDyeColor()).isPresent()) {
                     newBlock = EXNCBlocks.BARRELS.get(dyeItem.getDyeColor()).block();
-                } else if(stack.is(ExNihiloColoratus.NONE_DYE_TAG)) {
+                } else if(this.color.isPresent() && stack.is(ExNihiloColoratus.NONE_DYE_TAG)) {
                     newBlock = EXNCBlocks.NONE_BARREL.block();
                 }
             }

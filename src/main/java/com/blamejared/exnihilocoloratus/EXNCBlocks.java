@@ -13,17 +13,18 @@ import novamachina.novacore.world.level.block.BlockDefinition;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class EXNCBlocks {
     private static final BlockRegistry BLOCKS = new BlockRegistry(ExNihiloColoratus.MODID);
 
-    public static final BlockDefinition<CrucibleBlock> NONE_CRUCIBLE = BLOCKS.burnableBlock("Colorless Crucible", "none_crucible", ColoredWoodCrucibleBlock::new);
-    public static final BlockDefinition<BarrelBlock> NONE_BARREL = BLOCKS.burnableBlock("Colorless Barrel", "none_barrel", ColoredWoodBarrelBlock::new);
+    public static final BlockDefinition<CrucibleBlock> NONE_CRUCIBLE = BLOCKS.burnableBlock("Colorless Crucible", "none_crucible", () -> new ColoredWoodCrucibleBlock(Optional.empty()));
+    public static final BlockDefinition<BarrelBlock> NONE_BARREL = BLOCKS.burnableBlock("Colorless Barrel", "none_barrel", () -> new ColoredWoodBarrelBlock(Optional.empty()));
     public static final Map<DyeColor, BlockDefinition<CrucibleBlock>> CRUCIBLES = Util.make(() -> {
         ImmutableMap.Builder<DyeColor, BlockDefinition<CrucibleBlock>> builder = ImmutableMap.builder();
         for (DyeColor value : DyeColor.values()) {
-            builder.put(value, BLOCKS.burnableBlock(titleCase(value.getName()) + " Crucible", value.getName() + "_crucible", ColoredWoodCrucibleBlock::new));
+            builder.put(value, BLOCKS.burnableBlock(titleCase(value.getName()) + " Crucible", value.getName() + "_crucible", () -> new ColoredWoodCrucibleBlock(Optional.of(value))));
         }
         return builder.build();
     });
@@ -31,7 +32,7 @@ public class EXNCBlocks {
     public static final Map<DyeColor, BlockDefinition<BarrelBlock>> BARRELS = Util.make(() -> {
         ImmutableMap.Builder<DyeColor, BlockDefinition<BarrelBlock>> builder = ImmutableMap.builder();
         for (DyeColor value : DyeColor.values()) {
-            builder.put(value, BLOCKS.burnableBlock(titleCase(value.getName()) + " Barrel", value.getName() + "_barrel", ColoredWoodBarrelBlock::new));
+            builder.put(value, BLOCKS.burnableBlock(titleCase(value.getName()) + " Barrel", value.getName() + "_barrel", () -> new ColoredWoodBarrelBlock(Optional.of(value))));
         }
         return builder.build();
     });

@@ -22,7 +22,15 @@ import novamachina.exnihilosequentia.world.level.block.entity.WoodCrucibleBlockE
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 public class ColoredWoodCrucibleBlock extends WoodCrucibleBlock {
+
+    private final Optional<DyeColor> color;
+
+    public ColoredWoodCrucibleBlock(Optional<DyeColor> color) {
+        this.color = color;
+    }
 
     @Override
     public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand handIn, @NotNull BlockHitResult hit) {
@@ -31,9 +39,9 @@ public class ColoredWoodCrucibleBlock extends WoodCrucibleBlock {
         if (level.getBlockEntity(pos) instanceof WoodCrucibleBlockEntity be) {
             Block newBlock = null;
             if (be.getFluidAmount() == 0) {
-                if (stack.getItem() instanceof DyeItem dyeItem) {
+                if (stack.getItem() instanceof DyeItem dyeItem && this.color.filter(dyeColor -> dyeColor != dyeItem.getDyeColor()).isPresent()) {
                     newBlock = EXNCBlocks.CRUCIBLES.get(dyeItem.getDyeColor()).block();
-                } else if(stack.is(ExNihiloColoratus.NONE_DYE_TAG)) {
+                } else if(this.color.isPresent() && stack.is(ExNihiloColoratus.NONE_DYE_TAG)) {
                     newBlock = EXNCBlocks.NONE_CRUCIBLE.block();
                 }
             }
